@@ -22,7 +22,7 @@ window.addEventListener('scroll', () => {
 });
 
 // MARQUEE
-const items = ['React','Node.js','TypeScript','Python','AWS','Figma','Docker','PostgreSQL','Three.js','Go','GraphQL','Kubernetes'];
+const items = ['React','Node.js','Express','TypeScript','Python','FastAPI','Java','MongoDB','PostgreSQL','Bash'];
 const track = document.getElementById('marqueeTrack');
 if (track) {
   const doubled = [...items, ...items, ...items, ...items];

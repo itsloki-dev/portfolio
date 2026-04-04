@@ -249,7 +249,7 @@ nav {
 
 .hero-stats {
   position: absolute; bottom: 3rem; left: 4rem;
-  display: flex; gap: 3rem;
+  display: flex; gap: 3rem; align-items: flex-end;
   opacity: 0; animation: fadeUp 0.8s 1.1s forwards;
 }
 .stat { }
