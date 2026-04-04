@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Danny</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Playfair+Display:ital@1&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#hero" class="nav-logo">DJ</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Work</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+
+  <div class="hero-eyebrow">Available for work · 2026</div>
+  <h1 class="hero-name">David<br><span>J Arun</span></h1>
+  <p class="hero-role">Full-Stack Developer &amp; Creative Technologist</p>
+  <p class="hero-desc">I'm David J Arun, but you can call me <strong>Danny</strong>. I'm a backend-leaning developer who traded the comfort of Windows for Fedora + Hyprland and never looked back. From mastering Express.js to exploring the depths of Rust and Bash scripting, I'm just a guy who loves building cool stuff and over-optimizing his dotfiles.</p>
+  <div class="hero-cta">
+    <a href="#projects" class="btn-primary">View My Work</a>
+    <a href="#contact" class="btn-ghost">Let's Talk <span class="arrow">→</span></a>
+  </div>
+
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">5<span>+</span></div>
+      <div class="stat-label">Years Exp.</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">40<span>+</span></div>
+      <div class="stat-label">Projects</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">12<span>+</span></div>
+      <div class="stat-label">Clients</div>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-section">
+  <div class="marquee-track" id="marqueeTrack"></div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-visual reveal">
+    <div class="about-photo-placeholder">
+      <div class="about-photo-label">Your photo<br>goes here</div>
+    </div>
+    <div class="about-accent-line"></div>
+    <div class="about-accent-dot"></div>
+  </div>
+  <div class="about-text">
+    <div class="section-tag reveal">About</div>
+    <h2 class="section-title reveal reveal-delay-1">Crafting the <em>future</em><br>one pixel at a time</h2>
+    <p class="reveal reveal-delay-2">I'm <strong>David J Arun</strong> (better known as <strong>Danny</strong>), a full-stack developer and creative technologist. You might know me as <strong>itsdannydev</strong> online. I'm based in San Francisco with a deep passion for building products that feel as great as they work.</p>
+    <p class="reveal reveal-delay-3">When I'm not architecting scalable systems or obsessing over micro-interactions, you'll find me contributing to open source, writing about the web, or exploring the mountains.</p>
+    <div class="tech-stack reveal reveal-delay-4">
+      <span class="tech-tag">React</span>
+      <span class="tech-tag">TypeScript</span>
+      <span class="tech-tag">Node.js</span>
+      <span class="tech-tag">Python</span>
+      <span class="tech-tag">PostgreSQL</span>
+      <span class="tech-tag">AWS</span>
+      <span class="tech-tag">Figma</span>
+      <span class="tech-tag">Docker</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="projects-header">
+    <div>
+      <div class="section-tag reveal">Selected Work</div>
+      <h2 class="section-title reveal reveal-delay-1">Things I've <em>built</em></h2>
+    </div>
+  </div>
+  <div class="projects-grid reveal">
+    <!-- Card 1 — Large -->
+    <div class="project-card">
+      <a href="#" class="project-link">↗</a>
+      <div class="project-card-visual p-vis-1">
+        <div class="p-vis-grid"></div>
+        <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 400 320" fill="none">
+          <circle cx="200" cy="160" r="100" stroke="rgba(71,200,255,0.15)" stroke-width="1"/>
+          <circle cx="200" cy="160" r="70" stroke="rgba(71,200,255,0.2)" stroke-width="1"/>
+          <circle cx="200" cy="160" r="40" stroke="rgba(71,200,255,0.3)" stroke-width="1"/>
+          <circle cx="200" cy="160" r="8" fill="rgba(71,200,255,0.6)"/>
+          <line x1="200" y1="60" x2="200" y2="90" stroke="rgba(71,200,255,0.4)" stroke-width="1"/>
+          <line x1="280" y1="80" x2="260" y2="105" stroke="rgba(71,200,255,0.3)" stroke-width="1"/>
+          <line x1="120" y1="80" x2="140" y2="105" stroke="rgba(71,200,255,0.3)" stroke-width="1"/>
+          <text x="180" y="280" fill="rgba(71,200,255,0.3)" font-size="11" font-family="monospace">ORBIT.APP</text>
+        </svg>
+      </div>
+      <div class="project-num">01 — Featured</div>
+      <h3 class="project-title">Orbit — Real-Time Analytics Platform</h3>
+      <p class="project-desc">A high-performance analytics dashboard processing 10M+ events/day. Built with a custom WebSocket architecture and interactive D3.js visualizations.</p>
+      <div class="project-tags">
+        <span class="project-tag">React</span>
+        <span class="project-tag">Node.js</span>
+        <span class="project-tag">D3.js</span>
+        <span class="project-tag">Redis</span>
+      </div>
+    </div>
+    <!-- Card 2 -->
+    <div class="project-card">
+      <a href="#" class="project-link">↗</a>
+      <div class="project-card-visual p-vis-2">
+        <div class="p-vis-grid"></div>
+        <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 400 200" fill="none">
+          <rect x="60" y="40" width="280" height="120" rx="4" stroke="rgba(232,255,71,0.2)" stroke-width="1"/>
+          <rect x="80" y="60" width="80" height="8" rx="2" fill="rgba(232,255,71,0.3)"/>
+          <rect x="80" y="76" width="120" height="6" rx="2" fill="rgba(232,255,71,0.15)"/>
+          <rect x="80" y="90" width="100" height="6" rx="2" fill="rgba(232,255,71,0.1)"/>
+          <rect x="240" y="60" width="80" height="80" rx="4" fill="rgba(232,255,71,0.05)" stroke="rgba(232,255,71,0.15)" stroke-width="1"/>
+          <rect x="248" y="68" width="64" height="40" rx="2" fill="rgba(232,255,71,0.1)"/>
+        </svg>
+      </div>
+      <div class="project-num">02</div>
+      <h3 class="project-title">Forma — Design System</h3>
+      <p class="project-desc">A comprehensive design system and component library used across 6 products, with 200+ components and full accessibility support.</p>
+      <div class="project-tags">
+        <span class="project-tag">TypeScript</span>
+        <span class="project-tag">Storybook</span>
+        <span class="project-tag">CSS</span>
+      </div>
+    </div>
+    <!-- Card 3 -->
+    <div class="project-card">
+      <a href="#" class="project-link">↗</a>
+      <div class="project-card-visual p-vis-3">
+        <div class="p-vis-grid"></div>
+        <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 400 200" fill="none">
+          <path d="M80 140 Q160 60 240 100 Q320 140 360 80" stroke="rgba(255,77,109,0.5)" stroke-width="2" fill="none"/>
+          <path d="M80 140 Q160 60 240 100 Q320 140 360 80 L360 160 L80 160Z" fill="rgba(255,77,109,0.07)"/>
+          <circle cx="160" cy="80" r="4" fill="rgba(255,77,109,0.8)"/>
+          <circle cx="280" cy="120" r="4" fill="rgba(255,77,109,0.8)"/>
+          <line x1="160" y1="80" x2="160" y2="160" stroke="rgba(255,77,109,0.2)" stroke-dasharray="3,3"/>
+          <line x1="280" y1="120" x2="280" y2="160" stroke="rgba(255,77,109,0.2)" stroke-dasharray="3,3"/>
+        </svg>
+      </div>
+      <div class="project-num">03</div>
+      <h3 class="project-title">Pulse — Health Metrics App</h3>
+      <p class="project-desc">A mobile-first health tracking application with ML-powered insights, serving 50K+ active users on iOS and Android.</p>
+      <div class="project-tags">
+        <span class="project-tag">React Native</span>
+        <span class="project-tag">Python</span>
+        <span class="project-tag">ML</span>
+      </div>
+    </div>
+    <!-- Card 4 -->
+    <div class="project-card">
+      <a href="#" class="project-link">↗</a>
+      <div class="project-card-visual p-vis-4">
+        <div class="p-vis-grid"></div>
+        <svg style="position:absolute;inset:0;width:100%;height:100%" viewBox="0 0 400 200" fill="none">
+          <rect x="120" y="50" width="60" height="60" rx="4" stroke="rgba(71,255,200,0.3)" fill="rgba(71,255,200,0.05)"/>
+          <rect x="220" y="50" width="60" height="60" rx="4" stroke="rgba(71,255,200,0.3)" fill="rgba(71,255,200,0.05)"/>
+          <rect x="170" y="140" width="60" height="20" rx="4" fill="rgba(71,255,200,0.15)" stroke="rgba(71,255,200,0.3)"/>
+          <line x1="150" y1="110" x2="200" y2="140" stroke="rgba(71,255,200,0.3)"/>
+          <line x1="250" y1="110" x2="200" y2="140" stroke="rgba(71,255,200,0.3)"/>
+          <text x="138" y="82" fill="rgba(71,255,200,0.5)" font-size="10" font-family="monospace">API</text>
+          <text x="234" y="82" fill="rgba(71,255,200,0.5)" font-size="10" font-family="monospace">DB</text>
+        </svg>
+      </div>
+      <div class="project-num">04</div>
+      <h3 class="project-title">Atlas — API Gateway</h3>
+      <p class="project-desc">An open-source API gateway with rate limiting, auth, and monitoring. 2K+ GitHub stars and adopted by 300+ teams.</p>
+      <div class="project-tags">
+        <span class="project-tag">Go</span>
+        <span class="project-tag">Docker</span>
+        <span class="project-tag">K8s</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-tag reveal">Expertise</div>
+  <h2 class="section-title reveal reveal-delay-1">What I <em>bring</em> to the table</h2>
+  <div class="skills-layout">
+    <div class="skills-intro reveal reveal-delay-2">
+      <p>Over five years of building products from zero to one. I care deeply about both the code I write and the experiences it creates.</p>
+      <br>
+      <p>I work best at the intersection of product, engineering, and design — comfortable going deep on infrastructure one day and refining animations the next.</p>
+    </div>
+    <div class="skills-grid reveal reveal-delay-3">
+      <div class="skill-group">
+        <div class="skill-group-title">Frontend</div>
+        <div class="skill-item"><span class="skill-name">React / Next.js</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:95%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">TypeScript</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:90%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">CSS / Animation</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:88%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Three.js / WebGL</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:70%"></div></div></div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Backend</div>
+        <div class="skill-item"><span class="skill-name">Node.js</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:92%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Python</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:85%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">PostgreSQL</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:80%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Go</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:65%"></div></div></div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Cloud & DevOps</div>
+        <div class="skill-item"><span class="skill-name">AWS</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:82%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Docker / K8s</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:78%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">CI/CD</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:85%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Terraform</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:60%"></div></div></div>
+      </div>
+      <div class="skill-group">
+        <div class="skill-group-title">Design</div>
+        <div class="skill-item"><span class="skill-name">Figma</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:88%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Motion Design</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:75%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">Design Systems</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:90%"></div></div></div>
+        <div class="skill-item"><span class="skill-name">3D / Blender</span><div class="skill-bar-track"><div class="skill-bar-fill" style="width:55%"></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="section-tag reveal" style="justify-content:center">Get In Touch</div>
+    <div class="contact-big reveal reveal-delay-1">
+      Let's<br>
+      <span>Build</span>
+      Something.
+    </div>
+    <p class="reveal reveal-delay-2" style="font-size:0.85rem;line-height:1.9;color:var(--muted);max-width:440px;margin:0 auto">
+      Have a project in mind or just want to chat? My inbox is always open. I'm currently taking on select freelance projects and full-time opportunities.
+    </p>
+    <div class="contact-links reveal reveal-delay-3">
+      <a href="mailto:danny@itsdannydev.com" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        Email Me
+      </a>
+      <a href="https://github.com/itsdannydev" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/><path d="M9 18c-4.51 2-5-2-7-2"/></svg>
+        GitHub
+      </a>
+      <a href="https://linkedin.com/in/itsdannydev" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        LinkedIn
+      </a>
+      <a href="https://twitter.com/itsdannydev" class="contact-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>
+        Twitter
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2026 David J Arun (itsdannydev). Crafted with intention.</span>
+  <span>San Francisco, CA — Available for work</span>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
