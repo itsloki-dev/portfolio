@@ -72,9 +72,18 @@ async function loadProjects() {
       el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
     });
 
-
     // Observe reveal
     grid.querySelectorAll('.project-card').forEach(el => observer.observe(el));
+
+    // Load More Logic
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    if (loadMoreBtn) {
+      loadMoreBtn.addEventListener('click', () => {
+        grid.classList.remove('is-collapsed');
+        grid.classList.add('is-expanded');
+        loadMoreBtn.classList.add('hidden');
+      });
+    }
   }
 
   try {
