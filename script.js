@@ -42,9 +42,16 @@ async function loadProjects() {
         ? `background-image: url('${bannerPath}'); background-size: cover; background-position: center;`
         : `background: linear-gradient(135deg, #1a2335 0%, #080b10 100%);`;
 
+      const linksHtml = p.links ? `
+        <div class="project-links-container">
+          ${p.links.live ? `<a href="${p.links.live}" class="project-link" target="_blank" title="Live Demo"><span>↗</span></a>` : ''}
+          ${p.links.github ? `<a href="${p.links.github}" class="project-github" target="_blank" title="GitHub Repository"><span>&lt;&gt;</span></a>` : ''}
+        </div>
+      ` : '';
+
       return `
         <div class="project-card">
-          <a href="${p.url || '#'}" class="project-link" ${p.url ? 'target="_blank"' : ''}>↗</a>
+          ${linksHtml}
           <div class="project-card-visual" style="${bgStyle}">
             <div class="p-vis-grid"></div>
             ${!p.banner ? `<div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; opacity:0.2; font-size:4rem; font-weight:800; font-family:'Syne'; color:var(--accent); text-transform:uppercase;">${p.name}</div>` : ''}
@@ -60,10 +67,11 @@ async function loadProjects() {
     }).join('');
 
     // Re-bind hover listeners
-    grid.querySelectorAll('.project-card, .project-link').forEach(el => {
+    grid.querySelectorAll('.project-card, .project-link, .project-github').forEach(el => {
       el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
     });
+
 
     // Observe reveal
     grid.querySelectorAll('.project-card').forEach(el => observer.observe(el));

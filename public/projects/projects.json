@@ -3,37 +3,39 @@
         "name": "Orbit",
         "tagline": "Real-Time Analytics Platform",
         "description": "A high-performance analytics dashboard processing 10M+ events/day. Built with a custom WebSocket architecture and interactive D3.js visualizations.",
-        "techstack": ["react", "node.js", "d3.js", "redis"]
+        "techstack": ["react", "node.js", "d3.js", "redis"],
+        "banner": "orbit.png",
+        "links": {
+            "live": "https://orbit-demo.com",
+            "github": "https://github.com/itsdannydev/orbit"
+        }
     },
     {
         "name": "Forma",
         "tagline": "Design System",
         "description": "A comprehensive design system and component library used across 6 products, with 200+ components and full accessibility support.",
-        "techstack": ["typescript", "storybook", "css"]
+        "techstack": ["typescript", "storybook", "css"],
+        "banner": "forma.jpg",
+        "links": {
+            "github": "https://github.com/itsdannydev/forma"
+        }
     },
     {
         "name": "Pulse",
         "tagline": "Health Metrics App",
         "description": "A mobile-first health tracking application with ML-powered insights, serving 50K+ active users on iOS and Android.",
-        "techstack": ["react native", "python", "ml"]
+        "techstack": ["react native", "python", "ml"],
+        "links": {
+            "live": "https://pulse-health.app"
+        }
     },
     {
         "name": "Atlas",
         "tagline": "API Gateway",
         "description": "An open-source API gateway with rate limiting, auth, and monitoring. 2K+ GitHub stars and adopted by 300+ teams.",
-        "techstack": ["go", "docker", "k8s"]
-    },
-    {
-        "name": "Attendify",
-        "tagline": "Event Attendance Tracker",
-        "description": "Track event attendance with ease. supports CSV import/export",
-        "techstack": ["vanilla", "express", "mongodb"],
-        "banner": "test.png"
-    },
-    {
-        "name": "Attenddfsfjsdlfksdfljsfksflify",
-        "tagline": "Event Attendance Tracker",
-        "description": "Track event attendance with ease. supports CSV import/export",
-        "techstack": ["vanilla", "express", "mongodb"]
+        "techstack": ["go", "docker", "k8s"],
+        "links": {
+            "github": "https://github.com/itsdannydev/atlas"
+        }
     }
 ]
