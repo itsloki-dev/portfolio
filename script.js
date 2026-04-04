@@ -19,7 +19,7 @@ document.querySelectorAll('a, button, .project-card, .tech-tag, .contact-link').
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 60);
-});
+}, { passive: true });
 
 // MARQUEE
 const items = ['React','Node.js','Express','TypeScript','Python','FastAPI','Java','MongoDB','PostgreSQL','Bash'];
@@ -29,12 +29,69 @@ if (track) {
   track.innerHTML = doubled.map(i => `<span class="marquee-item"><span class="marquee-dot"></span>${i}</span>`).join('');
 }
 
+// PROJECTS FETCH & RENDER
+async function loadProjects() {
+  const grid = document.getElementById('projectsGrid');
+  if (!grid) return;
+
+  function render(projects) {
+    grid.innerHTML = projects.map((p, index) => {
+      const num = (index + 1).toString().padStart(2, '0');
+      const bannerPath = p.banner ? `public/projects/${p.banner}` : '';
+      const bgStyle = bannerPath 
+        ? `background-image: url('${bannerPath}'); background-size: cover; background-position: center;`
+        : `background: linear-gradient(135deg, #1a2335 0%, #080b10 100%);`;
+
+      return `
+        <div class="project-card">
+          <a href="${p.url || '#'}" class="project-link" ${p.url ? 'target="_blank"' : ''}>↗</a>
+          <div class="project-card-visual" style="${bgStyle}">
+            <div class="p-vis-grid"></div>
+            ${!p.banner ? `<div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; opacity:0.2; font-size:4rem; font-weight:800; font-family:'Syne'; color:var(--accent); text-transform:uppercase;">${p.name}</div>` : ''}
+          </div>
+          <div class="project-num">${num}${index === 0 ? ' — Featured' : ''}</div>
+          <h3 class="project-title">${p.name}${p.tagline ? ` — ${p.tagline}` : ''}</h3>
+          <p class="project-desc">${p.description}</p>
+          <div class="project-tags">
+            ${p.techstack.map(tag => `<span class="project-tag">${tag}</span>`).join('')}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // Re-bind hover listeners
+    grid.querySelectorAll('.project-card, .project-link').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+    });
+
+    // Observe reveal
+    grid.querySelectorAll('.project-card').forEach(el => observer.observe(el));
+  }
+
+  try {
+    const response = await fetch('public/projects/projects.json');
+    if (!response.ok) throw new Error('Network response was not ok');
+    const projects = await response.json();
+    render(projects);
+  } catch (err) {
+    console.error('Error loading projects:', err);
+    grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--muted); padding: 4rem 0;">
+      Failed to load projects. Ensure you are running through a local server.<br>
+      <small style="opacity: 0.5;">${err.message}</small>
+    </p>`;
+  }
+}
+
 // SCROLL REVEAL
 const reveals = document.querySelectorAll('.reveal');
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); } });
 }, { threshold: 0.15 });
 reveals.forEach(el => observer.observe(el));
+
+// Initialize projects
+loadProjects();
 
 // SKILL BAR ANIMATION — trigger when in view
 const skillBars = document.querySelectorAll('.skill-bar-fill');
@@ -54,4 +111,4 @@ window.addEventListener('scroll', () => {
   const orb2 = document.querySelector('.hero-orb-2');
   if (orb1) orb1.style.transform = `translate(${y*0.05}px, ${y*0.08}px)`;
   if (orb2) orb2.style.transform = `translate(${-y*0.03}px, ${-y*0.05}px)`;
-});
+}, { passive: true });
