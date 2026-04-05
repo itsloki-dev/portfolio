@@ -518,50 +518,96 @@ section { padding: 8rem 4rem; position: relative; }
 }
 
 
-/* SKILLS */
-#skills { }
-.skills-layout {
-  display: grid; grid-template-columns: 1fr 2fr; gap: 6rem;
-  margin-top: 4rem;
+/* SKILLS DYNAMIC GRID */
+.skills-dynamic-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Slightly larger cards */
+  gap: 2rem; /* Increased gap */
+  margin-top: 4rem; /* More space from intro */
 }
-.skills-intro { font-size: 0.85rem; line-height: 1.9; color: var(--muted); }
-.skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
-.skill-group { }
-.skill-group-title {
-  font-family: 'Syne', sans-serif; font-weight: 700;
-  font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
-  color: var(--accent); margin-bottom: 1.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--border);
-}
-.skill-item {
-  display: flex; justify-content: space-between; align-items: center;
-  margin-bottom: 1rem; padding: 0.5rem 0;
-}
-.skill-name { font-size: 0.8rem; color: var(--text); }
-.skill-bar-track {
-  width: 80px; height: 2px;
-  background: var(--border); position: relative; overflow: visible;
-}
-.skill-bar-fill {
-  height: 100%;
-  background: var(--accent);
+
+.skill-card {
+  background: rgba(17, 23, 32, 0.4); /* Glassmorphism base */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05); /* Subtle reflective border */
+  border-radius: 12px; /* Slightly rounded */
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1.25rem;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: none;
   position: relative;
-  animation: fillBar 1.5s ease forwards;
-  transform-origin: left;
-  transform: scaleX(0);
+  overflow: hidden;
 }
-.skill-bar-fill::after {
+
+/* Reflective Shine Effect */
+.skill-card::before {
   content: '';
-  position: absolute; right: -3px; top: -3px;
-  width: 8px; height: 8px;
-  background: var(--accent);
-  border-radius: 50%;
-  box-shadow: 0 0 8px var(--accent);
+  position: absolute;
+  top: -150%; left: -150%;
+  width: 300%; height: 300%;
+  background: linear-gradient(
+    135deg,
+    transparent,
+    rgba(255, 255, 255, 0.05),
+    transparent
+  );
+  transition: 0.6s ease;
 }
-@keyframes fillBar {
-  to { transform: scaleX(1); }
+
+.skill-card:hover::before {
+  top: 100%; left: 100%;
 }
+
+.skill-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(232, 255, 71, 0.4);
+  background: rgba(17, 23, 32, 0.6);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4), 
+              0 0 15px rgba(232, 255, 71, 0.1);
+}
+
+.skill-icon {
+  width: 48px; /* Slightly bigger icon */
+  height: 48px;
+  filter: grayscale(1) opacity(0.5);
+  transition: all 0.4s ease;
+}
+
+.skill-card:hover .skill-icon {
+  filter: grayscale(0) opacity(1) drop-shadow(0 0 8px rgba(232, 255, 71, 0.3));
+  transform: scale(1.1);
+}
+
+.skill-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.skill-name {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--text);
+  text-transform: capitalize;
+}
+
+.skill-count {
+  font-size: 0.65rem;
+  color: var(--muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Remove old skill styles */
+/* (Keeping the section and layout container but removing item specifics) */
+
 
 /* CONTACT */
 #contact {

@@ -15,6 +15,11 @@ document.querySelectorAll('a, button, .project-card, .tech-tag, .contact-link').
   el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
 });
 
+// SCROLL REVEAL OBSERVER
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.15 });
+
 // NAV SCROLL
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
@@ -100,26 +105,71 @@ async function loadProjects() {
   }
 }
 
-// SCROLL REVEAL
-const reveals = document.querySelectorAll('.reveal');
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); } });
-}, { threshold: 0.15 });
-reveals.forEach(el => observer.observe(el));
+// SKILLS DYNAMIC RANKING
+async function loadSkills() {
+  const grid = document.getElementById('skillsGrid');
+  if (!grid) return;
 
-// Initialize projects
-loadProjects();
+  try {
+    const response = await fetch('public/projects/projects.json');
+    if (!response.ok) throw new Error('Network response was not ok');
+    const projects = await response.json();
 
-// SKILL BAR ANIMATION — trigger when in view
-const skillBars = document.querySelectorAll('.skill-bar-fill');
-const barObserver = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if(e.isIntersecting) {
-      e.target.style.animation = 'fillBar 1.2s ease forwards';
-    }
-  });
-}, { threshold: 0.5 });
-skillBars.forEach(bar => { bar.style.transform = 'scaleX(0)'; barObserver.observe(bar); });
+    const techCounts = {};
+    projects.forEach(p => {
+      p.techstack.forEach(tech => {
+        const t = tech.toLowerCase().trim();
+        techCounts[t] = (techCounts[t] || 0) + 1;
+      });
+    });
+
+    const sortedTech = Object.entries(techCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 12);
+
+    grid.innerHTML = sortedTech.map(([tech, count]) => {
+      // Improved slug generation for Simple Icons
+      const slug = tech.toLowerCase()
+        .replace(/\.js/g, 'js')
+        .replace(/\+/g, 'plus')
+        .replace(/\s+/g, '-');
+      const iconUrl = `https://cdn.simpleicons.org/${slug}`;
+
+      return `
+        <div class="skill-card reveal">
+          <img src="${iconUrl}" alt="${tech}" class="skill-icon" onerror="this.style.display='none'">
+          <div class="skill-info">
+            <span class="skill-name">${tech}</span>
+            <span class="skill-count">${count} ${count === 1 ? 'Project' : 'Projects'}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    // Re-bind hover listeners
+    grid.querySelectorAll('.skill-card').forEach(el => {
+      el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
+      el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
+    });
+
+    // Observe reveal
+    grid.querySelectorAll('.skill-card').forEach(el => observer.observe(el));
+
+  } catch (err) {
+    console.error('Error loading skills:', err);
+  }
+}
+
+// Initialize everything
+async function init() {
+  // First observe existing reveals
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  
+  await loadProjects();
+  await loadSkills();
+}
+
+init();
 
 // PARALLAX ORBS
 window.addEventListener('scroll', () => {
