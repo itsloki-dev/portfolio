@@ -35,11 +35,24 @@ if (track) {
 }
 
 // PROJECTS FETCH & RENDER
+let allProjects = [];
+
 async function loadProjects() {
   const grid = document.getElementById('projectsGrid');
   if (!grid) return;
 
-  function render(projects) {
+  function highlightText(text, term) {
+    if (!term) return text;
+    const regex = new RegExp(`(${term.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')})`, 'gi');
+    return text.replace(regex, '<span class="search-highlight">$1</span>');
+  }
+
+  function render(projects, isSearching = false, term = '') {
+    if (projects.length === 0) {
+      grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--muted); padding: 4rem 0;">No projects found matching your search.</p>`;
+      return;
+    }
+
     grid.innerHTML = projects.map((p, index) => {
       const num = (index + 1).toString().padStart(2, '0');
       const bannerPath = p.banner ? `public/projects/${p.banner}` : '';
@@ -55,17 +68,17 @@ async function loadProjects() {
       ` : '';
 
       return `
-        <div class="project-card">
+        <div class="project-card reveal">
           ${linksHtml}
           <div class="project-card-visual" style="${bgStyle}">
             <div class="p-vis-grid"></div>
             ${!p.banner ? `<div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; opacity:0.2; font-size:4rem; font-weight:800; font-family:'Syne'; color:var(--accent); text-transform:uppercase;">${p.name}</div>` : ''}
           </div>
-          <div class="project-num">${num}${index === 0 ? ' — Featured' : ''}</div>
-          <h3 class="project-title">${p.name}${p.tagline ? ` — ${p.tagline}` : ''}</h3>
-          <p class="project-desc">${p.description}</p>
+          <div class="project-num">${num}${index === 0 && !isSearching ? ' — Featured' : ''}</div>
+          <h3 class="project-title">${highlightText(p.name, term)}${p.tagline ? ` — ${p.tagline}` : ''}</h3>
+          <p class="project-desc">${highlightText(p.description, term)}</p>
           <div class="project-tags">
-            ${p.techstack.map(tag => `<span class="project-tag">${tag}</span>`).join('')}
+            ${p.techstack.map(tag => `<span class="project-tag">${highlightText(tag, term)}</span>`).join('')}
           </div>
         </div>
       `;
@@ -77,8 +90,47 @@ async function loadProjects() {
       el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
     });
 
-    // Observe reveal
+    // Observe reveal for visible cards
     grid.querySelectorAll('.project-card').forEach(el => observer.observe(el));
+    
+    // Handle Load More visibility
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    if (loadMoreBtn) {
+      if (isSearching || projects.length <= 6) {
+        loadMoreBtn.parentElement.classList.add('hidden');
+      } else {
+        loadMoreBtn.parentElement.classList.remove('hidden');
+      }
+    }
+  }
+
+  try {
+    const response = await fetch('public/projects/projects.json');
+    if (!response.ok) throw new Error('Network response was not ok');
+    allProjects = await response.json();
+    render(allProjects);
+
+    // Search Logic
+    const searchInput = document.getElementById('projectSearch');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase().trim();
+        if (!term) {
+          grid.classList.add('is-collapsed');
+          grid.classList.remove('is-expanded');
+          render(allProjects);
+          return;
+        }
+
+        const nameMatches = allProjects.filter(p => p.name.toLowerCase().includes(term));
+        const techMatches = allProjects.filter(p => !nameMatches.includes(p) && p.techstack.some(t => t.toLowerCase().includes(term)));
+        const filtered = [...nameMatches, ...techMatches];
+        
+        grid.classList.remove('is-collapsed');
+        grid.classList.remove('is-expanded');
+        render(filtered, true, term);
+      });
+    }
 
     // Load More Logic
     const loadMoreBtn = document.getElementById('loadMoreBtn');
@@ -86,22 +138,12 @@ async function loadProjects() {
       loadMoreBtn.addEventListener('click', () => {
         grid.classList.remove('is-collapsed');
         grid.classList.add('is-expanded');
-        loadMoreBtn.classList.add('hidden');
+        loadMoreBtn.parentElement.classList.add('hidden');
       });
     }
-  }
-
-  try {
-    const response = await fetch('public/projects/projects.json');
-    if (!response.ok) throw new Error('Network response was not ok');
-    const projects = await response.json();
-    render(projects);
   } catch (err) {
     console.error('Error loading projects:', err);
-    grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--muted); padding: 4rem 0;">
-      Failed to load projects. Ensure you are running through a local server.<br>
-      <small style="opacity: 0.5;">${err.message}</small>
-    </p>`;
+    grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--muted); padding: 4rem 0;">Failed to load projects.</p>`;
   }
 }
 
@@ -128,11 +170,7 @@ async function loadSkills() {
       .slice(0, 12);
 
     grid.innerHTML = sortedTech.map(([tech, count]) => {
-      // Improved slug generation for Simple Icons
-      const slug = tech.toLowerCase()
-        .replace(/\.js/g, 'js')
-        .replace(/\+/g, 'plus')
-        .replace(/\s+/g, '-');
+      const slug = tech.toLowerCase().replace(/\.js/g, 'js').replace(/\+/g, 'plus').replace(/\s+/g, '-');
       const iconUrl = `https://cdn.simpleicons.org/${slug}`;
 
       return `
@@ -146,15 +184,12 @@ async function loadSkills() {
       `;
     }).join('');
 
-    // Re-bind hover listeners
     grid.querySelectorAll('.skill-card').forEach(el => {
       el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
     });
 
-    // Observe reveal
     grid.querySelectorAll('.skill-card').forEach(el => observer.observe(el));
-
   } catch (err) {
     console.error('Error loading skills:', err);
   }
@@ -162,9 +197,7 @@ async function loadSkills() {
 
 // Initialize everything
 async function init() {
-  // First observe existing reveals
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-  
   await loadProjects();
   await loadSkills();
 }

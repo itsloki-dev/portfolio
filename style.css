@@ -349,13 +349,80 @@ section { padding: 8rem 4rem; position: relative; }
 /* PROJECTS GRID */
 #projects { background: var(--surface); position: relative; padding-bottom: 2rem; overflow: visible; }
 
+.projects-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 3rem;
+  gap: 3rem;
+  width: 100%;
+}
+
+.projects-search {
+  position: relative;
+  width: 100%;
+  max-width: 600px; /* Wider search bar for better desktop presence */
+}
+
+/* Search Highlight Styling */
+.search-highlight {
+  background: rgba(232, 255, 71, 0.2);
+  color: var(--accent);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+
+#projectSearch {
+  width: 100%;
+  background: rgba(17, 23, 32, 0.4);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  padding: 0.9rem 1.5rem;
+  padding-right: 3rem;
+  border-radius: 100px;
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.8rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+#projectSearch:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 15px rgba(232, 255, 71, 0.1);
+  background: rgba(17, 23, 32, 0.6);
+}
+
+.search-icon {
+  position: absolute;
+  right: 1.25rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: var(--muted);
+  pointer-events: none;
+  transition: color 0.3s;
+}
+
+#projectSearch:focus + .search-icon {
+  color: var(--accent);
+}
+
+@media (max-width: 600px) {
+  .projects-search { min-width: 100%; }
+}
+
 .projects-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 2.5rem;
   position: relative;
   transition: max-height 0.8s ease;
-  padding: 2rem 0;
+  padding: 1.5rem 0 2rem; /* Reduced top padding */
 }
 
 
