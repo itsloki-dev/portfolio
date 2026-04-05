@@ -39,11 +39,17 @@ let allProjects = [];
 
 async function loadProjects() {
   const grid = document.getElementById('projectsGrid');
+  const searchInput = document.getElementById('projectSearch');
   if (!grid) return;
 
   function highlightText(text, term) {
     if (!term) return text;
-    const regex = new RegExp(`(${term.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')})`, 'gi');
+    const keywords = term.split(/\s+/).filter(k => k.length > 0);
+    if (keywords.length === 0) return text;
+    
+    // Create a regex that matches any of the keywords
+    const pattern = keywords.map(k => k.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')).join('|');
+    const regex = new RegExp(`(${pattern})`, 'gi');
     return text.replace(regex, '<span class="search-highlight">$1</span>');
   }
 
@@ -84,16 +90,13 @@ async function loadProjects() {
       `;
     }).join('');
 
-    // Re-bind hover listeners
     grid.querySelectorAll('.project-card, .project-link, .project-github').forEach(el => {
       el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
     });
 
-    // Observe reveal for visible cards
     grid.querySelectorAll('.project-card').forEach(el => observer.observe(el));
     
-    // Handle Load More visibility
     const loadMoreBtn = document.getElementById('loadMoreBtn');
     if (loadMoreBtn) {
       if (isSearching || projects.length <= 6) {
@@ -104,35 +107,56 @@ async function loadProjects() {
     }
   }
 
+  function performSearch(term) {
+    if (!term) {
+      grid.classList.add('is-collapsed');
+      grid.classList.remove('is-expanded');
+      render(allProjects);
+      return;
+    }
+
+    const keywords = term.toLowerCase().split(/\s+/).filter(k => k.length > 0);
+    
+    const filtered = allProjects.filter(p => {
+      const searchableContent = (p.name + ' ' + p.description + ' ' + p.techstack.join(' ')).toLowerCase();
+      // Project must contain ALL keywords
+      return keywords.every(kw => searchableContent.includes(kw));
+    });
+
+    grid.classList.remove('is-collapsed');
+    grid.classList.remove('is-expanded');
+    render(filtered, true, term);
+  }
+
   try {
     const response = await fetch('public/projects/projects.json');
     if (!response.ok) throw new Error('Network response was not ok');
     allProjects = await response.json();
+    
     render(allProjects);
 
-    // Search Logic
-    const searchInput = document.getElementById('projectSearch');
+    const urlParams = new URLSearchParams(window.location.search || window.location.hash.split('?')[1]);
+    const queryParam = urlParams.get('searchQuery');
+    
+    if (queryParam) {
+      const term = queryParam.toLowerCase().trim();
+      if (searchInput) searchInput.value = term;
+      performSearch(term);
+      
+      if (window.location.hash.includes('projects')) {
+        setTimeout(() => {
+          document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
+        }, 500);
+      }
+    }
+
     if (searchInput) {
       searchInput.addEventListener('input', (e) => {
         const term = e.target.value.toLowerCase().trim();
-        if (!term) {
-          grid.classList.add('is-collapsed');
-          grid.classList.remove('is-expanded');
-          render(allProjects);
-          return;
-        }
-
-        const nameMatches = allProjects.filter(p => p.name.toLowerCase().includes(term));
-        const techMatches = allProjects.filter(p => !nameMatches.includes(p) && p.techstack.some(t => t.toLowerCase().includes(term)));
-        const filtered = [...nameMatches, ...techMatches];
-        
-        grid.classList.remove('is-collapsed');
-        grid.classList.remove('is-expanded');
-        render(filtered, true, term);
+        performSearch(term);
       });
     }
 
-    // Load More Logic
     const loadMoreBtn = document.getElementById('loadMoreBtn');
     if (loadMoreBtn) {
       loadMoreBtn.addEventListener('click', () => {
