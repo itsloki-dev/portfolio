@@ -1,6 +1,6 @@
 [
     {
-        "name": "Orbit",
+        "name": "Alpha",
         "tagline": "Real-Time Analytics Platform",
         "description": "A high-performance analytics dashboard processing 10M+ events/day. Built with a custom WebSocket architecture and interactive D3.js visualizations.",
         "techstack": ["react", "node.js", "d3.js", "redis"],
