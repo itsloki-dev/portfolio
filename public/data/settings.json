@@ -1,0 +1,23 @@
+{
+  "theme": {
+    "colors": {
+      "bg": "#080b10",
+      "surface": "#0e1319",
+      "border": "#1e2733",
+      "accent": "#e8ff47",
+      "accent2": "#ff4d6d",
+      "accent3": "#47c8ff",
+      "text": "#e8edf5",
+      "muted": "#5c6880",
+      "card": "#111720",
+      "card-hover": "#141c26",
+      "btn-text": "#080b10"
+    },
+    "fonts": {
+      "main": "'DM Mono', monospace",
+      "heading": "'Syne', sans-serif",
+      "accent": "'Playfair Display', serif",
+      "import_url": "https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Playfair+Display:ital@1&display=swap"
+    }
+  }
+}

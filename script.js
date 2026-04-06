@@ -38,6 +38,39 @@ if (track) {
 let allProjects = [];
 let isInitialLoading = true;
 
+// THEME & SETTINGS LOADER
+async function loadSettings() {
+  try {
+    const response = await fetch('public/data/settings.json');
+    if (!response.ok) throw new Error('Settings not found');
+    const data = await response.json();
+    
+    // Load Fonts dynamically
+    if (data.theme.fonts.import_url) {
+      const link = document.createElement('link');
+      link.href = data.theme.fonts.import_url;
+      link.rel = 'stylesheet';
+      document.head.appendChild(link);
+    }
+
+    // Apply Colors
+    const colors = data.theme.colors;
+    for (const [key, value] of Object.entries(colors)) {
+      document.documentElement.style.setProperty(`--${key}`, value);
+    }
+    
+    // Apply Fonts
+    const fonts = data.theme.fonts;
+    for (const [key, value] of Object.entries(fonts)) {
+      if (key !== 'import_url') {
+        document.documentElement.style.setProperty(`--font-${key}`, value);
+      }
+    }
+  } catch (err) {
+    console.error('Error loading theme settings:', err);
+  }
+}
+
 function highlightText(text, term) {
   if (!term) return text;
   const keywords = term.split(/\s+/).filter(k => k.length > 0);
@@ -86,7 +119,7 @@ function renderProjects(projects, isSearching = false, term = '') {
     const bannerPath = p.banner ? `public/projects/${p.banner}` : '';
     const bgStyle = bannerPath 
       ? `background-image: url('${bannerPath}'); background-size: cover; background-position: center;`
-      : `background: linear-gradient(135deg, #1a2335 0%, #080b10 100%);`;
+      : `background: linear-gradient(135deg, var(--card) 0%, var(--bg) 100%);`;
 
     const linksHtml = p.links ? `
       <div class="project-links-container">
@@ -165,7 +198,7 @@ function handleURLQuery() {
 // PROJECTS FETCH
 async function loadProjects() {
   try {
-    const response = await fetch('public/data/projects.json');
+    const response = await fetch('public/projects/projects.json');
     if (!response.ok) throw new Error('Network response was not ok');
     allProjects = await response.json();
     renderProjects(allProjects);
@@ -180,7 +213,7 @@ async function loadSkills() {
   if (!grid) return;
 
   try {
-    const response = await fetch('public/data/projects.json');
+    const response = await fetch('public/projects/projects.json');
     const projects = await response.json();
 
     const techCounts = {};
@@ -253,6 +286,9 @@ const sectionObserver = new IntersectionObserver((entries) => {
 
 // Initialize everything
 async function init() {
+  // Load settings first for theme application
+  await loadSettings();
+  
   document.querySelectorAll('section[id]').forEach(section => sectionObserver.observe(section));
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   
