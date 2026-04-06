@@ -165,7 +165,7 @@ function handleURLQuery() {
 // PROJECTS FETCH
 async function loadProjects() {
   try {
-    const response = await fetch('public/projects/projects.json');
+    const response = await fetch('public/data/projects.json');
     if (!response.ok) throw new Error('Network response was not ok');
     allProjects = await response.json();
     renderProjects(allProjects);
@@ -180,7 +180,7 @@ async function loadSkills() {
   if (!grid) return;
 
   try {
-    const response = await fetch('public/projects/projects.json');
+    const response = await fetch('public/data/projects.json');
     const projects = await response.json();
 
     const techCounts = {};
