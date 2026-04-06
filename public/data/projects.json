@@ -1,58 +1,9 @@
 [
     {
-        "name": "Alpha",
-        "tagline": "Real-Time Analytics Platform",
-        "description": "A high-performance analytics dashboard processing 10M+ events/day. Built with a custom WebSocket architecture and interactive D3.js visualizations.",
-        "techstack": ["react", "node.js", "d3.js", "redis"],
-        "links": { "live": "#", "github": "#" }
-    },
-    {
-        "name": "Forma",
-        "tagline": "Design System",
-        "description": "A comprehensive design system and component library used across 6 products, with 200+ components.",
-        "techstack": ["typescript", "storybook", "css"],
-        "links": { "github": "#" }
-    },
-    {
-        "name": "Pulse",
-        "tagline": "Health Metrics App",
-        "description": "A mobile-first health tracking application with ML-powered insights, serving 50K+ active users.",
-        "techstack": ["react native", "python", "ml"],
-        "links": { "live": "#" }
-    },
-    {
-        "name": "Atlas",
-        "tagline": "API Gateway",
-        "description": "An open-source API gateway with rate limiting, auth, and monitoring. 2K+ GitHub stars.",
-        "techstack": ["go", "docker", "k8s"],
-        "links": { "github": "#" }
-    },
-    {
-        "name": "Lumina",
-        "tagline": "Smart Home Hub",
-        "description": "IoT orchestration platform for smart devices with end-to-end encryption.",
-        "techstack": ["rust", "mqtt", "react"],
-        "links": { "github": "#" }
-    },
-    {
-        "name": "Zenith",
-        "tagline": "E-commerce Engine",
-        "description": "Headless commerce API designed for high-concurrency seasonal sales events.",
-        "techstack": ["go", "postgresql", "redis"],
-        "links": { "live": "#" }
-    },
-    {
-        "name": "Vortex",
-        "tagline": "Data Pipeline",
-        "description": "Distributed data processing engine capable of handling petabytes of telemetry data.",
-        "techstack": ["python", "spark", "kafka"],
-        "links": { "github": "#" }
-    },
-    {
-        "name": "Echo",
-        "tagline": "Voice Assistant",
-        "description": "Privacy-focused offline voice assistant with custom wake-word detection.",
-        "techstack": ["c++", "tensorflow", "linux"],
-        "links": { "github": "#" }
+        "name": "GhostFollow",
+        "tagline": "Find the ghosts in your following list",
+        "description": "A minimal tool that parses your Instagram data export and tells you who doesn’t follow you back.",
+        "techstack": ["html", "javascript", "css"],
+        "links": { "live": "https://ghost-follow.vercel.app/", "github": "https://github.com/itsloki-dev/GhostFollow"}
     }
 ]
