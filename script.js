@@ -36,6 +36,7 @@ if (track) {
 
 // GLOBAL DATA & HELPERS
 let allProjects = [];
+let isInitialLoading = true;
 
 function highlightText(text, term) {
   if (!term) return text;
@@ -136,13 +137,28 @@ function handleURLQuery() {
   const queryParam = urlParams.get('searchQuery');
 
   if (queryParam) {
-    const term = queryParam.toLowerCase().trim();
-    performSearch(term);
-    if (hashPart.startsWith('#projects')) {
+    performSearch(queryParam.toLowerCase().trim());
+  }
+
+  if (hashPart) {
+    const targetId = hashPart.split('?')[0].substring(1);
+    if (!targetId) return;
+    
+    // Disable observer temporarily to prevent hash fighting
+    isInitialLoading = true;
+
+    requestAnimationFrame(() => {
       setTimeout(() => {
-        document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
-      }, 300);
-    }
+        const target = document.getElementById(targetId);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Re-enable observer after scroll finishes
+          setTimeout(() => { isInitialLoading = false; }, 800);
+        }
+      }, 150);
+    });
+  } else {
+    isInitialLoading = false;
   }
 }
 
@@ -152,26 +168,7 @@ async function loadProjects() {
     const response = await fetch('public/projects/projects.json');
     if (!response.ok) throw new Error('Network response was not ok');
     allProjects = await response.json();
-    
     renderProjects(allProjects);
-    handleURLQuery();
-
-    const searchInput = document.getElementById('projectSearch');
-    if (searchInput) {
-      searchInput.addEventListener('input', (e) => {
-        performSearch(e.target.value.toLowerCase().trim());
-      });
-    }
-
-    const loadMoreBtn = document.getElementById('loadMoreBtn');
-    if (loadMoreBtn) {
-      loadMoreBtn.addEventListener('click', () => {
-        const grid = document.getElementById('projectsGrid');
-        grid.classList.remove('is-collapsed');
-        grid.classList.add('is-expanded');
-        loadMoreBtn.parentElement.classList.add('hidden');
-      });
-    }
   } catch (err) {
     console.error('Error loading projects:', err);
   }
@@ -214,13 +211,10 @@ async function loadSkills() {
     grid.querySelectorAll('.skill-card').forEach(el => {
       el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));
-      
-      // Skill Card Click Feature - standard navigation for history support
       el.addEventListener('click', () => {
         const tech = el.getAttribute('data-tech');
-        const newURL = `#projects?searchQuery=${encodeURIComponent(tech)}`;
-        window.location.href = newURL;
-        window.location.reload(); // Force reload to ensure a clean state and history entry
+        window.location.href = `#projects?searchQuery=${encodeURIComponent(tech)}`;
+        window.location.reload(); 
       });
     });
 
@@ -230,17 +224,70 @@ async function loadSkills() {
   }
 }
 
-// Initialize
+// SECTION OBSERVER (Hash Sync & Nav Active State)
+const sectionObserver = new IntersectionObserver((entries) => {
+  if (isInitialLoading) return;
+
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.getAttribute('id');
+      if (!id) return;
+
+      const newHashBase = id === 'hero' ? '#' : `#${id}`;
+      
+      // ONLY keep searchQuery if we are actually looking at the projects section
+      const currentHash = window.location.hash;
+      const queryPart = (id === 'projects' && currentHash.includes('?')) 
+        ? '?' + currentHash.split('?')[1] 
+        : '';
+      
+      history.replaceState(null, null, newHashBase + queryPart);
+      
+      document.querySelectorAll('.nav-links a').forEach(link => {
+        const href = link.getAttribute('href');
+        link.classList.toggle('active', href === `#${id}`);
+      });
+    }
+  });
+}, { threshold: 0.6 });
+
+// Initialize everything
 async function init() {
+  document.querySelectorAll('section[id]').forEach(section => sectionObserver.observe(section));
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-  await loadProjects();
-  await loadSkills();
+  
+  // Wait for all data to load before handling routing
+  await Promise.all([loadProjects(), loadSkills()]);
+  
+  handleURLQuery();
+
+  // Search Input Listener
+  const searchInput = document.getElementById('projectSearch');
+  if (searchInput) {
+    searchInput.addEventListener('input', (e) => {
+      performSearch(e.target.value.toLowerCase().trim());
+    });
+  }
+
+  // Load More Logic
+  const loadMoreBtn = document.getElementById('loadMoreBtn');
+  if (loadMoreBtn) {
+    loadMoreBtn.addEventListener('click', () => {
+      const grid = document.getElementById('projectsGrid');
+      grid.classList.remove('is-collapsed');
+      grid.classList.add('is-expanded');
+      loadMoreBtn.parentElement.classList.add('hidden');
+    });
+  }
 }
 
 init();
 
 // Handle back/forward navigation
-window.addEventListener('popstate', handleURLQuery);
+window.addEventListener('popstate', () => {
+  isInitialLoading = false; 
+  handleURLQuery();
+});
 
 // PARALLAX ORBS
 window.addEventListener('scroll', () => {

@@ -91,8 +91,8 @@ nav {
   background: var(--accent);
   transition: width 0.3s;
 }
-.nav-links a:hover { color: var(--text); }
-.nav-links a:hover::after { width: 100%; }
+.nav-links a:hover, .nav-links a.active { color: var(--text); }
+.nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
 
 /* HERO */
 #hero {
@@ -269,7 +269,11 @@ nav {
 }
 
 /* SECTION COMMON */
-section { padding: 8rem 4rem; position: relative; }
+section { 
+  padding: 8rem 4rem; 
+  position: relative; 
+  scroll-margin-top: 100px; /* Accounts for the fixed header */
+}
 .section-tag {
   font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
   color: var(--accent); display: flex; align-items: center; gap: 1rem;
