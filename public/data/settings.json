@@ -17,7 +17,9 @@
       "main": "'DM Mono', monospace",
       "heading": "'Syne', sans-serif",
       "accent": "'Playfair Display', serif",
-      "import_url": "https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Playfair+Display:ital@1&display=swap"
+      "hero": "'Bodoni Moda', serif",
+      "import_url": "https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Playfair+Display:ital@1&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&display=swap"
     }
-  }
+  },
+  "profile_pic": "public/profile_pic.jpeg"
 }
