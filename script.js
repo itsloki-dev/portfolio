@@ -289,8 +289,31 @@ async function loadSkills() {
     const sortedTech = Object.entries(techCounts).sort((a, b) => b[1] - a[1]).slice(0, 12);
 
     grid.innerHTML = sortedTech.map(([tech, count]) => {
-      const slug = tech.toLowerCase().replace(/\.js/g, 'js').replace(/\+/g, 'plus').replace(/\s+/g, '-');
-      const iconUrl = `https://cdn.simpleicons.org/${slug}`;
+      // Improved slug mapping
+      const mapping = {
+        'express': 'express',
+        'express.js': 'express',
+        'expressjs': 'express',
+        'node.js': 'nodedotjs',
+        'nodejs': 'nodedotjs',
+        'mongodb': 'mongodb',
+        'react': 'react',
+        'next.js': 'nextdotjs',
+        'c++': 'cplusplus',
+        'c#': 'csharp'
+      };
+
+      const slug = mapping[tech.toLowerCase()] || tech.toLowerCase()
+        .replace(/\.js/g, 'js')
+        .replace(/\+/g, 'plus')
+        .replace(/\s+/g, '-');
+      
+      // Some icons (like Express) are naturally black/dark and invisible on our theme.
+      // Force them to silver (#e8edf5) for visibility.
+      const forcedSilver = ['express', 'lua']; 
+      const iconUrl = forcedSilver.includes(tech.toLowerCase()) 
+        ? `https://cdn.simpleicons.org/${slug}/e8edf5`
+        : `https://cdn.simpleicons.org/${slug}`;
 
       return `
         <div class="skill-card reveal" data-tech="${tech}">
