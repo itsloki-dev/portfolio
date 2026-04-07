@@ -116,7 +116,7 @@ function renderProjects(projects, isSearching = false, term = '') {
 
   grid.innerHTML = projects.map((p, index) => {
     const num = (index + 1).toString().padStart(2, '0');
-    const bannerPath = p.banner ? `public/projects/${p.banner}` : '';
+    const bannerPath = p.banner || '';
     const bgStyle = bannerPath 
       ? `background-image: url('${bannerPath}'); background-size: cover; background-position: center;`
       : `background: linear-gradient(135deg, var(--card) 0%, var(--bg) 100%);`;
@@ -132,8 +132,8 @@ function renderProjects(projects, isSearching = false, term = '') {
       <div class="project-card reveal">
         ${linksHtml}
         <div class="project-card-visual" style="${bgStyle}">
-          <div class="p-vis-grid"></div>
-          ${!p.banner ? `<div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; opacity:0.2; font-size:4rem; font-weight:800; font-family:'Syne'; color:var(--accent); text-transform:uppercase;">${p.name}</div>` : ''}
+          ${!bannerPath ? '<div class="p-vis-grid"></div>' : ''}
+          ${!bannerPath ? `<div class="project-watermark">${p.name}</div>` : ''}
         </div>
         <div class="project-num">${num}${index === 0 && !isSearching ? ' — Featured' : ''}</div>
         <h3 class="project-title">${highlightText(p.name, term)}${p.tagline ? ` — ${p.tagline}` : ''}</h3>
@@ -144,6 +144,19 @@ function renderProjects(projects, isSearching = false, term = '') {
       </div>
     `;
   }).join('');
+
+  // Handle Watermark Overflow
+  grid.querySelectorAll('.project-watermark').forEach(wm => {
+    const parent = wm.parentElement;
+    const maxWidth = parent.offsetWidth - 40; // 20px padding each side
+    let fontSize = 4; // Start at 4rem
+    wm.style.fontSize = fontSize + 'rem';
+    
+    while (wm.scrollWidth > maxWidth && fontSize > 1.5) {
+      fontSize -= 0.2;
+      wm.style.fontSize = fontSize + 'rem';
+    }
+  });
 
   grid.querySelectorAll('.project-card, .project-link, .project-github').forEach(el => {
     el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
@@ -198,10 +211,25 @@ function handleURLQuery() {
 // PROJECTS FETCH
 async function loadProjects() {
   try {
-    const response = await fetch('public/data/projects.json');
+    const response = await fetch('public/data/projects.json?v=' + Date.now());
     if (!response.ok) throw new Error('Network response was not ok');
     allProjects = await response.json();
     renderProjects(allProjects);
+    
+    // Double check overflow after initial paint
+    setTimeout(() => {
+        const watermarks = document.querySelectorAll('.project-watermark');
+        watermarks.forEach(wm => {
+            const parent = wm.parentElement;
+            if (!parent) return;
+            const maxWidth = parent.offsetWidth - 40;
+            let fontSize = parseFloat(wm.style.fontSize) || 4;
+            while (wm.scrollWidth > maxWidth && fontSize > 1) {
+                fontSize -= 0.1;
+                wm.style.fontSize = fontSize + 'rem';
+            }
+        });
+    }, 100);
   } catch (err) {
     console.error('Error loading projects:', err);
   }
@@ -213,7 +241,7 @@ async function loadSkills() {
   if (!grid) return;
 
   try {
-    const response = await fetch('public/data/projects.json');
+    const response = await fetch('public/data/projects.json?v=' + Date.now());
     const projects = await response.json();
 
     const techCounts = {};

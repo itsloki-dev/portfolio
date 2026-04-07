@@ -1,10 +1,16 @@
+/*
+Make sure the banner is always a url.
+Its better if the banner is of ratio 3:1
+recommended sizes 3000 x 1000px, 900 x 300px or 600 x 200px
+*/
 [
     {
         "name": "Alpha",
         "tagline": "Real-Time Analytics Platform",
         "description": "A high-performance analytics dashboard processing 10M+ events/day. Built with a custom WebSocket architecture and interactive D3.js visualizations.",
         "techstack": ["react", "node.js", "d3.js", "redis"],
-        "links": { "live": "#", "github": "#" }
+        "links": { "live": "#", "github": "#" },
+        "banner": "https://github.com/itsloki-dev/GhostFollow/raw/main/assets/banner.png"
     },
     {
         "name": "Forma",
