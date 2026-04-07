@@ -1,18 +1,25 @@
 [
     {
-        "name": "GhostFollow",
-        "tagline": "Find the ghosts in your following list",
-        "description": "A minimal tool that parses your Instagram data export and tells you who doesn’t follow you back.",
-        "techstack": ["html", "javascript", "css"],
-        "links": { "live": "https://ghost-follow.vercel.app/", "github": "https://github.com/itsloki-dev/GhostFollow"},
-        "banner": "https://raw.githubusercontent.com/itsloki-dev/GhostFollow/main/assets/banner.png"
-    },
-    {
         "name": "Dotfiles",
         "tagline": "Not perfect. Just mine.",
         "description": "Personal dotfiles for managing and reproducing my Linux development setup.",
-        "techstack": ["lua", "bash"],
+        "techstack": ["lua", "gnubash","shell"],
         "links": { "github": "https://github.com/itsloki-dev/.dotfiles"},
         "banner": "https://github.com/itsloki-dev/.dotfiles/raw/main/assets/banner.png"
+    },
+    {
+        "name": "Attendify",
+        "tagline": "Club Events Attendance Tracker",
+        "description": "Export CSV file exported from website, have an interactive attendance tracker",
+        "techstack": ["ejs", "javascript", "css","express"],
+        "links": { "github": "https://github.com/itsloki-dev/attendify"}
+    },
+    {
+        "name": "GhostFollow",
+        "tagline": "Find the ghosts in your following list",
+        "description": "A minimal tool that parses your Instagram data export and tells you who doesn’t follow you back.",
+        "techstack": ["html5", "javascript", "css"],
+        "links": { "live": "https://ghost-follow.vercel.app/", "github": "https://github.com/itsloki-dev/GhostFollow"},
+        "banner": "https://raw.githubusercontent.com/itsloki-dev/GhostFollow/main/assets/banner.png"
     }
 ]

@@ -145,17 +145,34 @@ function renderProjects(projects, isSearching = false, term = '') {
     `;
   }).join('');
 
-  // Handle Watermark Overflow
+  // Handle Watermark Overflow (Precise Fill)
   grid.querySelectorAll('.project-watermark').forEach(wm => {
     const parent = wm.parentElement;
-    const maxWidth = parent.offsetWidth - 40; // 20px padding each side
-    let fontSize = 4; // Start at 4rem
-    wm.style.fontSize = fontSize + 'rem';
+    if (!parent) return;
     
-    while (wm.scrollWidth > maxWidth && fontSize > 1.5) {
-      fontSize -= 0.2;
-      wm.style.fontSize = fontSize + 'rem';
-    }
+    const maxWidth = parent.offsetWidth * 0.9; // Use 90% of width
+    const maxHeight = parent.offsetHeight * 0.8; // Use 80% of height
+    
+    const test = document.createElement('span');
+    test.style.fontSize = '10px';
+    test.style.visibility = 'hidden';
+    test.style.position = 'absolute';
+    test.style.whiteSpace = 'nowrap';
+    test.style.fontFamily = 'Syne, sans-serif'; // Match heading font
+    test.style.fontWeight = '800';
+    test.style.textTransform = 'uppercase';
+    test.innerText = wm.innerText;
+    document.body.appendChild(test);
+    
+    const widthAt10 = test.offsetWidth;
+    const heightAt10 = test.offsetHeight;
+    document.body.removeChild(test);
+    
+    const scaleW = maxWidth / widthAt10;
+    const scaleH = maxHeight / heightAt10;
+    const finalScale = Math.min(scaleW, scaleH);
+    
+    wm.style.fontSize = (finalScale * 10) + 'px';
   });
 
   grid.querySelectorAll('.project-card, .project-link, .project-github').forEach(el => {
@@ -216,18 +233,35 @@ async function loadProjects() {
     allProjects = await response.json();
     renderProjects(allProjects);
     
-    // Double check overflow after initial paint
+    // Double check overflow after initial paint (Precise Fill)
     setTimeout(() => {
         const watermarks = document.querySelectorAll('.project-watermark');
         watermarks.forEach(wm => {
             const parent = wm.parentElement;
             if (!parent) return;
-            const maxWidth = parent.offsetWidth - 40;
-            let fontSize = parseFloat(wm.style.fontSize) || 4;
-            while (wm.scrollWidth > maxWidth && fontSize > 1) {
-                fontSize -= 0.1;
-                wm.style.fontSize = fontSize + 'rem';
-            }
+            const maxWidth = parent.offsetWidth * 0.9;
+            const maxHeight = parent.offsetHeight * 0.8;
+            
+            const test = document.createElement('span');
+            test.style.fontSize = '10px';
+            test.style.visibility = 'hidden';
+            test.style.position = 'absolute';
+            test.style.whiteSpace = 'nowrap';
+            test.style.fontFamily = 'Syne, sans-serif';
+            test.style.fontWeight = '800';
+            test.style.textTransform = 'uppercase';
+            test.innerText = wm.innerText;
+            document.body.appendChild(test);
+            
+            const widthAt10 = test.offsetWidth;
+            const heightAt10 = test.offsetHeight;
+            document.body.removeChild(test);
+            
+            const scaleW = maxWidth / widthAt10;
+            const scaleH = maxHeight / heightAt10;
+            const finalScale = Math.min(scaleW, scaleH);
+            
+            wm.style.fontSize = (finalScale * 10) + 'px';
         });
     }, 100);
   } catch (err) {
