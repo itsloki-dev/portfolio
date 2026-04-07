@@ -1,4 +1,4 @@
-# Portfolio — David J Arun (Danny)
+# My Portfolio WebPage
 
 A personal portfolio website to showcase projects, skills, and development focus.
 
@@ -6,7 +6,7 @@ A personal portfolio website to showcase projects, skills, and development focus
 
 * HTML
 * CSS
-* Vanilla JavaScript
+* JavaScript
 
 ## Features
 
