@@ -66,6 +66,20 @@ async function loadSettings() {
         document.documentElement.style.setProperty(`--font-${key}`, value);
       }
     }
+
+    // Apply Profile Picture
+    const profilePic = document.getElementById('profilePic');
+    const profilePlaceholder = document.getElementById('profilePlaceholder');
+    if (profilePic && data.profile_pic) {
+      profilePic.onload = () => {
+        profilePic.style.display = 'block';
+        if (profilePlaceholder) profilePlaceholder.style.display = 'none';
+      };
+      profilePic.onerror = () => {
+        console.error("Failed to load profile picture:", data.profile_pic);
+      };
+      profilePic.src = data.profile_pic;
+    }
   } catch (err) {
     console.error('Error loading theme settings:', err);
   }
