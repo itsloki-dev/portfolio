@@ -482,6 +482,7 @@ if (typingContainer) {
 
       // 4. Type Danny
       await new Promise(r => setTimeout(r, 500));
+      line2.style.display = 'none'; // Hide second line for Danny
       await type(line1, text3);
 
       // 5. Blink for 3s
@@ -489,6 +490,7 @@ if (typingContainer) {
 
       // 6. Backspace Danny
       await backspace(line1);
+      line2.style.display = 'flex'; // Restore second line for David
       await new Promise(r => setTimeout(r, 500));
     }
   }
