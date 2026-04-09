@@ -161,16 +161,49 @@ nav {
 .hero-name {
   font-family: var(--font-heading);
   font-weight: 800;
-  font-size: clamp(4rem, 10vw, 9rem);
-  line-height: 0.9;
-  letter-spacing: -0.04em;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   opacity: 0;
   animation: fadeUp 0.8s 0.4s forwards;
+  position: relative;
+  display: block;
 }
-.hero-name span {
+
+.name-full {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  line-height: 0.9;
+  /* Approximate height for 2 lines based on clamp font size */
+  min-height: 1.8em; 
+  height: calc(clamp(4rem, 10vw, 8rem) * 1.8);
+}
+
+.first-line, .second-line {
+  font-size: clamp(4rem, 10vw, 8rem);
+  letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  min-height: 0.9em;
+}
+
+.second-line {
   -webkit-text-stroke: 1px color-mix(in srgb, var(--accent), transparent 50%);
   color: transparent;
+}
+
+.typing-cursor {
+  display: inline-block;
+  width: 0.1em;
+  height: 0.8em;
+  background: var(--accent);
+  margin-left: 0.1em;
+  animation: cursorBlink 0.8s infinite;
+  vertical-align: middle;
+}
+
+@keyframes cursorBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 .hero-role {

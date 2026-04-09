@@ -432,3 +432,66 @@ window.addEventListener('scroll', () => {
   if (orb1) orb1.style.transform = `translate(${y*0.05}px, ${y*0.08}px)`;
   if (orb2) orb2.style.transform = `translate(${-y*0.03}px, ${-y*0.05}px)`;
 }, { passive: true });
+
+// TYPING ANIMATION
+const typingContainer = document.getElementById('typingContainer');
+if (typingContainer) {
+  const line1 = document.getElementById('line1');
+  const line2 = document.getElementById('line2');
+  const cursor = document.createElement('span');
+  cursor.className = 'typing-cursor';
+
+  const text1 = "David";
+  const text2 = "J Arun";
+  const text3 = "Danny";
+
+  async function type(el, text, speed = 100) {
+    el.appendChild(cursor);
+    for (let i = 0; i < text.length; i++) {
+      cursor.before(text[i]);
+      await new Promise(r => setTimeout(r, speed));
+    }
+  }
+
+  async function backspace(el, speed = 50) {
+    let text = el.innerText.replace('|', '');
+    while (text.length > 0) {
+      text = text.slice(0, -1);
+      el.innerText = text;
+      el.appendChild(cursor);
+      await new Promise(r => setTimeout(r, speed));
+    }
+  }
+
+  async function startTyping() {
+    while (true) {
+      // 1. Type David J Arun
+      line1.innerText = "";
+      line2.innerText = "";
+      await type(line1, text1);
+      await new Promise(r => setTimeout(r, 200));
+      await type(line2, text2);
+      
+      // 2. Blink for 2s
+      await new Promise(r => setTimeout(r, 2000));
+
+      // 3. Backspace entirely
+      await backspace(line2);
+      await new Promise(r => setTimeout(r, 200));
+      await backspace(line1);
+
+      // 4. Type Danny
+      await new Promise(r => setTimeout(r, 500));
+      await type(line1, text3);
+
+      // 5. Blink for 3s
+      await new Promise(r => setTimeout(r, 3000));
+
+      // 6. Backspace Danny
+      await backspace(line1);
+      await new Promise(r => setTimeout(r, 500));
+    }
+  }
+
+  startTyping();
+}
