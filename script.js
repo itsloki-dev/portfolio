@@ -10,6 +10,102 @@ function animCursor() {
   requestAnimationFrame(animCursor);
 }
 animCursor();
+
+// STARFIELD ANIMATION
+(function() {
+  const canvas = document.getElementById('starfield');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  let w, h;
+  function resize() {
+    w = canvas.width = window.innerWidth;
+    h = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Star layers: far (slow, dim, small) → near (faster, brighter, larger)
+  const layers = [
+    { count: 180, speed: 0.08, sizeMin: 0.3, sizeMax: 0.8, opacity: 0.3 },
+    { count: 100, speed: 0.18, sizeMin: 0.5, sizeMax: 1.2, opacity: 0.5 },
+    { count: 40, speed: 0.35, sizeMin: 1.0, sizeMax: 2.0, opacity: 0.8 },
+    { count: 8, speed: 0.5, sizeMin: 1.5, sizeMax: 2.5, opacity: 1.0 },
+  ];
+
+  const stars = [];
+  layers.forEach(layer => {
+    for (let i = 0; i < layer.count; i++) {
+      stars.push({
+        x: Math.random() * 2000,  // use a virtual width for wrapping
+        y: Math.random() * 2000,
+        size: layer.sizeMin + Math.random() * (layer.sizeMax - layer.sizeMin),
+        speed: layer.speed + (Math.random() - 0.5) * layer.speed * 0.4,
+        baseOpacity: layer.opacity * (0.6 + Math.random() * 0.4),
+        twinkleSpeed: 0.5 + Math.random() * 2.5,
+        twinkleOffset: Math.random() * Math.PI * 2,
+        // A few stars get a warm/cool tint
+        hue: Math.random() > 0.85 ? (Math.random() > 0.5 ? 45 : 210) : 0,
+        saturation: Math.random() > 0.85 ? 30 + Math.random() * 40 : 0,
+      });
+    }
+  });
+
+  let time = 0;
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    time += 0.016; // ~60fps timestep
+
+    stars.forEach(star => {
+      // Drift upward & slightly left for a "moving through space" feel
+      star.y -= star.speed;
+      star.x -= star.speed * 0.15;
+
+      // Wrap around
+      if (star.y < -5) star.y = h + 5;
+      if (star.x < -5) star.x = w + 5;
+      if (star.x > w + 5) star.x = -5;
+
+      // Twinkle: sine oscillation on opacity
+      const twinkle = Math.sin(time * star.twinkleSpeed + star.twinkleOffset);
+      const opacity = star.baseOpacity * (0.5 + 0.5 * twinkle);
+
+      // Draw with mapped position
+      const drawX = ((star.x % w) + w) % w;
+      const drawY = ((star.y % h) + h) % h;
+
+      if (star.saturation > 0) {
+        ctx.fillStyle = `hsla(${star.hue}, ${star.saturation}%, 85%, ${opacity})`;
+      } else {
+        ctx.fillStyle = `rgba(232, 237, 245, ${opacity})`;
+      }
+
+      // Larger stars get a soft glow
+      if (star.size > 1.4) {
+        ctx.beginPath();
+        ctx.arc(drawX, drawY, star.size * 3, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(232, 237, 245, ${opacity * 0.06})`;
+        ctx.fill();
+        // Reset fill for the core
+        if (star.saturation > 0) {
+          ctx.fillStyle = `hsla(${star.hue}, ${star.saturation}%, 85%, ${opacity})`;
+        } else {
+          ctx.fillStyle = `rgba(232, 237, 245, ${opacity})`;
+        }
+      }
+
+      ctx.beginPath();
+      ctx.arc(drawX, drawY, star.size, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+})();
+
+
 document.querySelectorAll('a, button, .project-card, .tech-tag, .contact-link').forEach(el => {
   el.addEventListener('mouseenter', () => document.body.classList.add('hovering'));
   el.addEventListener('mouseleave', () => document.body.classList.remove('hovering'));

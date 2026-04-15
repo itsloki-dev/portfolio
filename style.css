@@ -109,13 +109,17 @@ nav {
   overflow: hidden;
 }
 
-.hero-grid-bg {
-  position: absolute; inset: 0;
-  background-image:
-    linear-gradient(color-mix(in srgb, var(--accent), transparent 97%) 1px, transparent 1px),
-    linear-gradient(90deg, color-mix(in srgb, var(--accent), transparent 97%) 1px, transparent 1px);
-  background-size: 80px 80px;
+/* STARFIELD CANVAS */
+#starfield {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  z-index: 0;
   pointer-events: none;
+}
+
+.hero-grid-bg {
+  display: none;
 }
 
 .hero-orb {
